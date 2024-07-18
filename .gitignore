@@ -21,3 +21,78 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+  const handleTraceFilter = (traceFilter) => {
+    if (weeklyFilters.length === 0) { // no weekly filter active
+      if (traceFilters.includes(traceFilter)) {
+        setTraceFilters(prevFilters => {
+          const updatedFilters = prevFilters.filter(filter => filter !== traceFilter)
+          setFilteredCharacters(characters.filter(character => updatedFilters.includes(character.trace_materials)))
+          return updatedFilters
+        })
+      } else {
+        setTraceFilters(prevFilters => {
+          const updatedFilters = [...prevFilters, traceFilter]
+          setFilteredCharacters(characters.filter(character => updatedFilters.includes(character.trace_materials)))
+          return updatedFilters
+        })
+      }
+    } else {
+      if (traceFilters.includes(traceFilter)) {
+        if (traceFilters.length === 1) {
+          setTraceFilters([])
+          setFilteredCharacters(characters.filter(character => weeklyFilters.includes(character.weekly_materials)))
+        } else {
+          setTraceFilters(prevFilters => {
+            const updatedFilters = prevFilters.filter(filter => filter !== traceFilter)
+            setFilteredCharacters(characters.filter(character => updatedFilters.includes(character.trace_materials) && weeklyFilters.includes(character.weekly_materials)))
+            return updatedFilters
+          })
+        }
+      } else {
+        setTraceFilters(prevFilters => {
+          const updatedFilters = [...prevFilters, traceFilter]
+          setFilteredCharacters(characters.filter(character => updatedFilters.includes(character.trace_materials) && weeklyFilters.includes(character.weekly_materials)))
+          return updatedFilters
+        })
+      }
+    }
+  }
+
+  const handleWeeklyFilter = (weeklyFilter) => {
+    if (traceFilters.length === 0) { // no weekly filter active
+      if (weeklyFilters.includes(weeklyFilter)) {
+        setWeeklyFilters(prevFilters => {
+          const updatedFilters = prevFilters.filter(filter => filter !== weeklyFilter)
+          setFilteredCharacters(characters.filter(character => updatedFilters.includes(character.weekly_materials)))
+          return updatedFilters
+        })
+      } else {
+        setWeeklyFilters(prevFilters => {
+          const updatedFilters = [...prevFilters, weeklyFilter]
+          setFilteredCharacters(characters.filter(character => updatedFilters.includes(character.weekly_materials)))
+          return updatedFilters
+        })
+      }
+    } else {
+      if (weeklyFilters.includes(weeklyFilter)) {
+        if (weeklyFilter.length === 1) {
+          setWeeklyFilters([])
+          setFilteredCharacters(characters.filter(character => weeklyFilters.includes(character.weekly_materials)))
+        } else {
+          setTraceFilters(prevFilters => {
+            const updatedFilters = prevFilters.filter(filter => filter !== weeklyFilter)
+            setFilteredCharacters(characters.filter(character => updatedFilters.includes(character.trace_materials) && traceFilters.includes(character.weekly_materials)))
+            return updatedFilters
+          })
+        }
+      } else {
+        setWeeklyFilters(prevFilters => {
+          const updatedFilters = [...prevFilters, weeklyFilter]
+          setFilteredCharacters(characters.filter(character => updatedFilters.includes(character.trace_materials) && traceFilters.includes(character.weekly_materials)))
+          return updatedFilters
+        })
+      }
+    }
+  }
